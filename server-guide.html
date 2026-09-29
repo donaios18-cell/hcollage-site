@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Server setup — H.Collage</title>
+<meta name="description" content="How to share a folder on your own server with the H.Collage private section, over HTTPS, without opening SSH or root.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=Azeret+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,300;6..72,400&display=swap">
+<style>
+  :root {
+    --sheet: #EFEEEA; --card: #FFFFFF; --edge: #D6D5CF;
+    --ink: #15181B; --ink-soft: #5E6167; --ink-faint: #8E9197;
+    --grease: #D33A2C; --code: #F7F6F2; color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sheet: #121416; --card: #1C1F22; --edge: #2E3235;
+      --ink: #F0EFEB; --ink-soft: #A9ACB1; --ink-faint: #767A80;
+      --grease: #FF6B57; --code: #16181B; color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--sheet); color: var(--ink);
+    font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 0 56px; }
+  .masthead {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap; padding-block: 22px 0;
+  }
+  .wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; color: var(--ink); }
+  .wordmark span { color: var(--grease); }
+  .langs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .langs button {
+    font: 500 12px/1 'Azeret Mono', ui-monospace, monospace; letter-spacing: 0.04em;
+    padding: 7px 9px; border-radius: 4px; border: 1px solid var(--edge);
+    background: transparent; color: var(--ink-soft); cursor: pointer;
+  }
+  .langs button[aria-pressed="true"] { background: var(--ink); color: var(--sheet); border-color: var(--ink); }
+  h1 { font-size: clamp(28px, 5vw, 40px); letter-spacing: -0.03em; font-weight: 800; margin: 36px 0 12px; text-wrap: balance; }
+  .summary {
+    background: var(--card); border: 1px solid var(--edge); border-inline-start: 3px solid var(--grease);
+    border-radius: 4px; padding: 18px 20px; margin-bottom: 30px;
+  }
+  .summary p { margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.5; color: var(--ink-soft); }
+  h2 { font-size: 21px; letter-spacing: -0.015em; margin: 34px 0 10px; }
+  h2 .n { font-family: 'Azeret Mono', ui-monospace, monospace; color: var(--grease); margin-inline-end: 8px; }
+  p, li { color: var(--ink-soft); }
+  p { margin: 0 0 14px; }
+  ul { margin: 0 0 14px; padding-inline-start: 20px; }
+  li { margin-bottom: 8px; }
+  strong { color: var(--ink); font-weight: 600; }
+  a { color: var(--ink); }
+  code { font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 0.9em; }
+  .block { position: relative; margin: 0 0 16px; direction: ltr; }
+  pre {
+    margin: 0; background: var(--code); border: 1px solid var(--edge); border-radius: 4px;
+    padding: 14px 16px; padding-inline-end: 72px; overflow-x: auto; tab-size: 4;
+    font: 400 13px/1.55 'Azeret Mono', ui-monospace, monospace; color: var(--ink); text-align: left;
+  }
+  .copy {
+    position: absolute; top: 8px; right: 8px;
+    font: 500 11px/1 'Azeret Mono', ui-monospace, monospace; letter-spacing: 0.04em;
+    padding: 6px 8px; border-radius: 4px; border: 1px solid var(--edge);
+    background: var(--card); color: var(--ink-soft); cursor: pointer;
+  }
+  .note { font-size: 15px; border-inline-start: 2px solid var(--edge); padding-inline-start: 12px; }
+  footer { border-top: 1px solid var(--edge); margin-top: 46px; padding-top: 22px;
+    font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 11.5px; color: var(--ink-faint);
+    display: flex; gap: 18px; flex-wrap: wrap; }
+  footer a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--edge); }
+</style>
+
+<link rel="canonical" href="https://collage.nghive.app/server-guide">
+<meta property="og:url" content="https://collage.nghive.app/server-guide">
+<meta property="og:title" content="Server setup — H.Collage">
+<meta property="og:description" content="Share a folder on your own server with the H.Collage private section, over HTTPS.">
+<meta property="og:image" content="https://nghive.app/assets/header.jpg">
+<meta property="og:site_name" content="NG Hive">
+<meta property="og:type" content="website">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="wordmark" href="./">H<span>.</span>Collage</a>
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-set="en">English</button>
+      <button type="button" data-set="ru">Русский</button>
+      <button type="button" data-set="es">Español</button>
+      <button type="button" data-set="fr">Français</button>
+      <button type="button" data-set="zh">中文</button>
+      <button type="button" data-set="ar">العربية</button>
+    </div>
+  </header>
+
+  <h1 data-t="title">Connect your server to H.Collage</h1>
+
+  <div class="summary">
+    <p data-t="lead">The private section reads files from a folder on your own server over HTTPS, with a
+    user name and password made just for it. Your SSH login and root account are never used by the
+    app and stay as locked down as they are now.</p>
+  </div>
+
+  <h2 data-t="need_h">What you need</h2>
+  <ul>
+    <li data-t="need_1">A Linux server (Ubuntu or Debian) that you can reach over SSH with sudo rights.</li>
+    <li data-t="need_2">A domain name pointing to the server's IP address. A free subdomain from <a href="https://www.duckdns.org/">DuckDNS</a> works.</li>
+    <li data-t="need_3">Ports 80 and 443 open — in the server's firewall and at your hosting provider.</li>
+  </ul>
+
+  <h2><span class="n">1</span><span data-t="s1_h">Install Caddy</span></h2>
+  <p data-t="s1_p">Caddy is a small web server that gets an HTTPS certificate on its own. Connect to the server over SSH the way you always do, and first make sure nothing else is using ports 80 and 443:</p>
+  <div class="block"><pre>sudo ss -ltnp | grep -E ':(80|443) '</pre></div>
+  <p class="note" data-t="s1_note">If this prints anything, another web server is already running there. Stop and sort that out first — installing Caddy on top would break it.</p>
+  <p data-t="s1_p2">If it prints nothing, install Caddy:</p>
+  <div class="block"><pre>sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo chmod o+r /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+sudo chmod o+r /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install -y caddy</pre></div>
+
+  <h2><span class="n">2</span><span data-t="s2_h">Choose the folder to share</span></h2>
+  <p data-t="s2_p">Everything in this folder will be visible in the app, and nothing outside it. Create it and let Caddy read it:</p>
+  <div class="block"><pre>sudo mkdir -p /srv/files
+sudo chmod -R a+rX /srv/files</pre></div>
+  <p class="note" data-t="s2_note">Put your files there the way you usually copy files to the server. After adding new ones, run the second line again.</p>
+
+  <h2><span class="n">3</span><span data-t="s3_h">Make a password for the app</span></h2>
+  <p data-t="s3_p">Run this and type a new password twice. It prints a long line starting with <code>$2a$</code> — copy it.</p>
+  <div class="block"><pre>caddy hash-password</pre></div>
+  <p class="note" data-t="s3_note">Make it a new, long password. It is not your root or SSH password, and it opens only this one folder, read-only.</p>
+
+  <h2><span class="n">4</span><span data-t="s4_h">Write the Caddy settings</span></h2>
+  <p data-t="s4_p">Open the settings file:</p>
+  <div class="block"><pre>sudo nano /etc/caddy/Caddyfile</pre></div>
+  <p data-t="s4_p2">Delete everything in it and paste the text below. On the first line put your domain; instead of <code>me</code>, any user name you like; instead of the <code>$2a$…</code> line, the one you copied in step 3. Save with Ctrl+O, Enter, and exit with Ctrl+X.</p>
+  <div class="block"><pre>files.example.com {
+	root * /srv/files
+	basic_auth {
+		me $2a$14$PASTE_THE_LINE_FROM_STEP_3
+	}
+	file_server browse
+}</pre></div>
+
+  <h2><span class="n">5</span><span data-t="s5_h">Start it</span></h2>
+  <div class="block"><pre>sudo systemctl reload caddy</pre></div>
+  <p data-t="s5_p">Within a minute Caddy fetches an HTTPS certificate by itself. To check, open <code>https://</code> plus your domain in any browser: it should ask for a user name and password, then show your files.</p>
+
+  <h2><span class="n">6</span><span data-t="s6_h">Add the server in H.Collage</span></h2>
+  <ul>
+    <li data-t="s6_1"><strong>Address:</strong> <code>https://</code> and your domain, for example <code>https://files.example.com</code></li>
+    <li data-t="s6_2"><strong>User:</strong> the user name from step 4</li>
+    <li data-t="s6_3"><strong>Password:</strong> the one from step 3. The app does not store it — you type it each time you connect.</li>
+  </ul>
+
+  <h2 data-t="why_h">Why it is done this way</h2>
+  <p data-t="why_p">Everything travels over HTTPS, so nobody on the network in between can read the password or the files. The app never gets a key to your server: even if someone forced the private section open, all they would reach is this one folder, read-only — not the server.</p>
+
+  <h2 data-t="tr_h">If it does not connect</h2>
+  <ul>
+    <li data-t="tr_1"><strong>"No answer from this address"</strong> — the domain does not point to the server yet, or ports 80 and 443 are closed. Check the provider's firewall too.</li>
+    <li data-t="tr_2"><strong>"The server answered, but it does not share files with H.Collage yet"</strong> — Caddy is not running or the settings are not what step 4 shows. <code>sudo systemctl status caddy</code> shows what went wrong.</li>
+    <li data-t="tr_3"><strong>"Wrong password"</strong> — the user name or password differ from the settings. The line from step 3 must be made from the same password you type in the app.</li>
+  </ul>
+
+  <footer>
+    <a href="./">H.Collage</a>
+    <a href="privacy">Privacy Policy</a>
+    <a href="mailto:contact@nghive.app">Contact</a>
+    <a href="https://nghive.app/" target="_blank" rel="noopener">Made by NG Hive &#8599;</a>
+  </footer>
+
+</div>
+
+<script>
+// English is written into the page itself; the other languages replace it.
+// Commands and settings stay as they are in every language.
+const T = {
+  ru: {
+    copy: 'Копировать', copied: 'Скопировано',
+    title: 'Подключение своего сервера к H.Collage',
+    lead: 'Закрытый раздел читает файлы из папки на вашем сервере по HTTPS, с отдельными именем пользователя и паролем только для него. Ваш вход по SSH и учётная запись root приложением не используются и остаются закрытыми, как сейчас.',
+    need_h: 'Что понадобится',
+    need_1: 'Сервер на Linux (Ubuntu или Debian), на который вы заходите по SSH с правами sudo.',
+    need_2: 'Доменное имя, указывающее на IP-адрес сервера. Подойдёт бесплатный поддомен <a href="https://www.duckdns.org/">DuckDNS</a>.',
+    need_3: 'Открытые порты 80 и 443 — и в файрволе сервера, и у хостинг-провайдера.',
+    s1_h: 'Установите Caddy',
+    s1_p: 'Caddy — небольшой веб-сервер, который сам получает HTTPS-сертификат. Зайдите на сервер по SSH, как обычно, и сначала убедитесь, что порты 80 и 443 ничем не заняты:',
+    s1_note: 'Если команда что-то вывела, там уже работает другой веб-сервер. Остановитесь и сначала разберитесь с ним — Caddy поверх него всё сломает.',
+    s1_p2: 'Если ничего не вывела, установите Caddy:',
+    s2_h: 'Выберите папку для доступа',
+    s2_p: 'Всё, что лежит в этой папке, будет видно в приложении, и ничего за её пределами. Создайте её и разрешите Caddy её читать:',
+    s2_note: 'Кладите туда файлы так, как обычно копируете их на сервер. После добавления новых файлов выполните вторую строку ещё раз.',
+    s3_h: 'Придумайте пароль для приложения',
+    s3_p: 'Выполните команду и дважды введите новый пароль. Она выведет длинную строку, начинающуюся с <code>$2a$</code>, — скопируйте её.',
+    s3_note: 'Пусть это будет новый длинный пароль. Это не пароль root и не пароль SSH: он открывает только эту папку и только на чтение.',
+    s4_h: 'Пропишите настройки Caddy',
+    s4_p: 'Откройте файл настроек:',
+    s4_p2: 'Удалите всё, что в нём есть, и вставьте текст ниже. В первой строке — ваш домен; вместо <code>me</code> — любое имя пользователя; вместо строки <code>$2a$…</code> — та, что вы скопировали на шаге 3. Сохраните: Ctrl+O, Enter, выход — Ctrl+X.',
+    s5_h: 'Запустите',
+    s5_p: 'В течение минуты Caddy сам получит HTTPS-сертификат. Для проверки откройте в любом браузере <code>https://</code> и ваш домен: должен появиться запрос имени и пароля, а затем список файлов.',
+    s6_h: 'Добавьте сервер в H.Collage',
+    s6_1: '<strong>Адрес:</strong> <code>https://</code> и ваш домен, например <code>https://files.example.com</code>',
+    s6_2: '<strong>Пользователь:</strong> имя из шага 4',
+    s6_3: '<strong>Пароль:</strong> тот, что с шага 3. Приложение его не хранит — вы вводите его при каждом подключении.',
+    why_h: 'Почему именно так',
+    why_p: 'Всё идёт по HTTPS, поэтому никто в сети по пути не прочитает ни пароль, ни файлы. Ключа от сервера у приложения нет: даже если закрытый раздел заставят открыть, доступна будет только эта папка и только на чтение — а не сервер.',
+    tr_h: 'Если не подключается',
+    tr_1: '<strong>«No answer from this address»</strong> — домен ещё не указывает на сервер или закрыты порты 80 и 443. Проверьте и файрвол у провайдера.',
+    tr_2: '<strong>«The server answered, but it does not share files with H.Collage yet»</strong> — Caddy не запущен или настройки отличаются от шага 4. Что не так, покажет <code>sudo systemctl status caddy</code>.',
+    tr_3: '<strong>«Wrong password»</strong> — имя или пароль не совпадают с настройками. Строка из шага 3 должна быть сделана из того же пароля, что вы вводите в приложении.',
+  },
+  es: {
+    copy: 'Copiar', copied: 'Copiado',
+    title: 'Conecta tu servidor a H.Collage',
+    lead: 'La sección privada lee archivos de una carpeta de tu propio servidor por HTTPS, con un usuario y una contraseña creados solo para ella. La app nunca usa tu acceso SSH ni la cuenta root, que siguen tan protegidos como ahora.',
+    need_h: 'Qué necesitas',
+    need_1: 'Un servidor Linux (Ubuntu o Debian) al que puedas entrar por SSH con permisos sudo.',
+    need_2: 'Un dominio que apunte a la IP del servidor. Sirve un subdominio gratuito de <a href="https://www.duckdns.org/">DuckDNS</a>.',
+    need_3: 'Los puertos 80 y 443 abiertos, en el cortafuegos del servidor y en tu proveedor de hosting.',
+    s1_h: 'Instala Caddy',
+    s1_p: 'Caddy es un pequeño servidor web que obtiene por sí solo un certificado HTTPS. Entra al servidor por SSH como siempre y comprueba primero que nada esté usando los puertos 80 y 443:',
+    s1_note: 'Si esto muestra algo, ya hay otro servidor web funcionando. Detente y resuélvelo antes: instalar Caddy encima lo rompería.',
+    s1_p2: 'Si no muestra nada, instala Caddy:',
+    s2_h: 'Elige la carpeta que compartirás',
+    s2_p: 'Todo lo que haya en esta carpeta se verá en la app, y nada de fuera. Créala y deja que Caddy la lea:',
+    s2_note: 'Copia los archivos ahí como sueles copiarlos al servidor. Después de añadir archivos nuevos, vuelve a ejecutar la segunda línea.',
+    s3_h: 'Crea una contraseña para la app',
+    s3_p: 'Ejecuta esto y escribe dos veces una contraseña nueva. Mostrará una línea larga que empieza por <code>$2a$</code>: cópiala.',
+    s3_note: 'Que sea nueva y larga. No es tu contraseña de root ni de SSH, y solo abre esta carpeta, en modo lectura.',
+    s4_h: 'Escribe la configuración de Caddy',
+    s4_p: 'Abre el archivo de configuración:',
+    s4_p2: 'Borra todo lo que contiene y pega el texto de abajo. En la primera línea, tu dominio; en lugar de <code>me</code>, el usuario que quieras; en lugar de la línea <code>$2a$…</code>, la que copiaste en el paso 3. Guarda con Ctrl+O, Enter, y sal con Ctrl+X.',
+    s5_h: 'Ponlo en marcha',
+    s5_p: 'En un minuto Caddy obtiene el certificado HTTPS por sí solo. Para comprobarlo, abre <code>https://</code> y tu dominio en cualquier navegador: debe pedir usuario y contraseña y luego mostrar tus archivos.',
+    s6_h: 'Añade el servidor en H.Collage',
+    s6_1: '<strong>Dirección:</strong> <code>https://</code> y tu dominio, por ejemplo <code>https://files.example.com</code>',
+    s6_2: '<strong>Usuario:</strong> el del paso 4',
+    s6_3: '<strong>Contraseña:</strong> la del paso 3. La app no la guarda: la escribes cada vez que te conectas.',
+    why_h: 'Por qué se hace así',
+    why_p: 'Todo viaja por HTTPS, así que nadie en la red intermedia puede leer la contraseña ni los archivos. La app nunca recibe una llave de tu servidor: aunque alguien obligara a abrir la sección privada, solo llegaría a esta carpeta, en modo lectura, no al servidor.',
+    tr_h: 'Si no conecta',
+    tr_1: '<strong>«No answer from this address»</strong>: el dominio aún no apunta al servidor o los puertos 80 y 443 están cerrados. Revisa también el cortafuegos del proveedor.',
+    tr_2: '<strong>«The server answered, but it does not share files with H.Collage yet»</strong>: Caddy no está en marcha o la configuración no es la del paso 4. <code>sudo systemctl status caddy</code> muestra qué falló.',
+    tr_3: '<strong>«Wrong password»</strong>: el usuario o la contraseña no coinciden con la configuración. La línea del paso 3 debe generarse con la misma contraseña que escribes en la app.',
+  },
+  fr: {
+    copy: 'Copier', copied: 'Copié',
+    title: 'Connecter votre serveur à H.Collage',
+    lead: 'La section privée lit les fichiers d’un dossier de votre propre serveur en HTTPS, avec un nom d’utilisateur et un mot de passe créés uniquement pour elle. L’app n’utilise jamais votre accès SSH ni le compte root, qui restent aussi verrouillés qu’aujourd’hui.',
+    need_h: 'Ce qu’il vous faut',
+    need_1: 'Un serveur Linux (Ubuntu ou Debian) accessible en SSH avec les droits sudo.',
+    need_2: 'Un nom de domaine pointant vers l’adresse IP du serveur. Un sous-domaine gratuit <a href="https://www.duckdns.org/">DuckDNS</a> convient.',
+    need_3: 'Les ports 80 et 443 ouverts, dans le pare-feu du serveur et chez votre hébergeur.',
+    s1_h: 'Installez Caddy',
+    s1_p: 'Caddy est un petit serveur web qui obtient tout seul un certificat HTTPS. Connectez-vous au serveur en SSH comme d’habitude et vérifiez d’abord que rien n’utilise les ports 80 et 443 :',
+    s1_note: 'Si cette commande affiche quelque chose, un autre serveur web tourne déjà. Arrêtez-vous et réglez cela d’abord : installer Caddy par-dessus le casserait.',
+    s1_p2: 'Si elle n’affiche rien, installez Caddy :',
+    s2_h: 'Choisissez le dossier à partager',
+    s2_p: 'Tout ce qui se trouve dans ce dossier sera visible dans l’app, et rien en dehors. Créez-le et autorisez Caddy à le lire :',
+    s2_note: 'Déposez-y vos fichiers comme vous copiez habituellement des fichiers sur le serveur. Après en avoir ajouté, relancez la deuxième ligne.',
+    s3_h: 'Créez un mot de passe pour l’app',
+    s3_p: 'Lancez ceci et tapez deux fois un nouveau mot de passe. Une longue ligne commençant par <code>$2a$</code> s’affiche : copiez-la.',
+    s3_note: 'Choisissez un mot de passe nouveau et long. Ce n’est pas celui de root ni de SSH, et il n’ouvre que ce dossier, en lecture seule.',
+    s4_h: 'Écrivez la configuration de Caddy',
+    s4_p: 'Ouvrez le fichier de configuration :',
+    s4_p2: 'Effacez tout son contenu et collez le texte ci-dessous. Sur la première ligne, votre domaine ; à la place de <code>me</code>, le nom d’utilisateur de votre choix ; à la place de la ligne <code>$2a$…</code>, celle copiée à l’étape 3. Enregistrez avec Ctrl+O, Entrée, et quittez avec Ctrl+X.',
+    s5_h: 'Lancez-le',
+    s5_p: 'En une minute, Caddy obtient seul un certificat HTTPS. Pour vérifier, ouvrez <code>https://</code> suivi de votre domaine dans un navigateur : il doit demander un nom d’utilisateur et un mot de passe, puis afficher vos fichiers.',
+    s6_h: 'Ajoutez le serveur dans H.Collage',
+    s6_1: '<strong>Adresse :</strong> <code>https://</code> et votre domaine, par exemple <code>https://files.example.com</code>',
+    s6_2: '<strong>Utilisateur :</strong> le nom choisi à l’étape 4',
+    s6_3: '<strong>Mot de passe :</strong> celui de l’étape 3. L’app ne le garde pas : vous le tapez à chaque connexion.',
+    why_h: 'Pourquoi procéder ainsi',
+    why_p: 'Tout passe par HTTPS : personne sur le réseau entre les deux ne peut lire le mot de passe ni les fichiers. L’app n’a jamais de clé de votre serveur : même si l’on forçait l’ouverture de la section privée, on n’atteindrait que ce dossier, en lecture seule, et non le serveur.',
+    tr_h: 'Si la connexion échoue',
+    tr_1: '<strong>« No answer from this address »</strong> : le domaine ne pointe pas encore vers le serveur, ou les ports 80 et 443 sont fermés. Vérifiez aussi le pare-feu de l’hébergeur.',
+    tr_2: '<strong>« The server answered, but it does not share files with H.Collage yet »</strong> : Caddy ne tourne pas ou la configuration diffère de l’étape 4. <code>sudo systemctl status caddy</code> indique le problème.',
+    tr_3: '<strong>« Wrong password »</strong> : le nom ou le mot de passe diffère de la configuration. La ligne de l’étape 3 doit être créée à partir du mot de passe que vous tapez dans l’app.',
+  },
+  zh: {
+    copy: '复制', copied: '已复制',
+    title: '将你的服务器连接到 H.Collage',
+    lead: '私密区通过 HTTPS 读取你自己服务器上某个文件夹中的文件，并使用专门为它创建的用户名和密码。应用从不使用你的 SSH 登录和 root 账户，它们会像现在一样保持锁定。',
+    need_h: '准备工作',
+    need_1: '一台 Linux 服务器（Ubuntu 或 Debian），你可以通过 SSH 以 sudo 权限登录。',
+    need_2: '一个指向服务器 IP 地址的域名。<a href="https://www.duckdns.org/">DuckDNS</a> 的免费子域名即可。',
+    need_3: '开放 80 和 443 端口——服务器防火墙和主机商那里都要开放。',
+    s1_h: '安装 Caddy',
+    s1_p: 'Caddy 是一个小型网页服务器，会自动获取 HTTPS 证书。像平时一样通过 SSH 登录服务器，先确认 80 和 443 端口没有被占用：',
+    s1_note: '如果这条命令有输出，说明那里已经有别的网页服务器在运行。请先停下来处理好它——在它之上安装 Caddy 会把它弄坏。',
+    s1_p2: '如果没有任何输出，就安装 Caddy：',
+    s2_h: '选择要共享的文件夹',
+    s2_p: '这个文件夹里的所有内容都会在应用中可见，文件夹以外的都不会。创建它并允许 Caddy 读取：',
+    s2_note: '用你平时往服务器复制文件的方式把文件放进去。添加新文件后，再运行一次第二行。',
+    s3_h: '为应用设置密码',
+    s3_p: '运行下面的命令，输入两次新密码。它会输出一长串以 <code>$2a$</code> 开头的文字——把它复制下来。',
+    s3_note: '请使用一个新的长密码。它不是 root 或 SSH 密码，只能以只读方式打开这一个文件夹。',
+    s4_h: '编写 Caddy 配置',
+    s4_p: '打开配置文件：',
+    s4_p2: '删除其中的全部内容，粘贴下面的文字。第一行写你的域名；把 <code>me</code> 换成你想要的用户名；把 <code>$2a$…</code> 那一行换成第 3 步复制的内容。按 Ctrl+O、回车保存，按 Ctrl+X 退出。',
+    s5_h: '启动',
+    s5_p: '一分钟内 Caddy 会自动获取 HTTPS 证书。检查方法：在任意浏览器中打开 <code>https://</code> 加你的域名，应当先要求输入用户名和密码，然后显示你的文件。',
+    s6_h: '在 H.Collage 中添加服务器',
+    s6_1: '<strong>地址：</strong><code>https://</code> 加你的域名，例如 <code>https://files.example.com</code>',
+    s6_2: '<strong>用户：</strong>第 4 步中的用户名',
+    s6_3: '<strong>密码：</strong>第 3 步中的密码。应用不会保存它——每次连接时都需要输入。',
+    why_h: '为什么这样做',
+    why_p: '所有数据都通过 HTTPS 传输，中间网络上的任何人都无法读取密码或文件。应用从不持有你服务器的密钥：即使有人强迫打开私密区，也只能以只读方式看到这一个文件夹，而不是整台服务器。',
+    tr_h: '如果连接不上',
+    tr_1: '<strong>“No answer from this address”</strong>——域名还没有指向服务器，或 80、443 端口未开放。也请检查主机商的防火墙。',
+    tr_2: '<strong>“The server answered, but it does not share files with H.Collage yet”</strong>——Caddy 没有运行，或配置与第 4 步不同。<code>sudo systemctl status caddy</code> 会显示出了什么问题。',
+    tr_3: '<strong>“Wrong password”</strong>——用户名或密码与配置不一致。第 3 步的那一行必须由你在应用中输入的同一个密码生成。',
+  },
+  ar: {
+    copy: 'نسخ', copied: 'تم النسخ',
+    title: 'ربط خادمك بتطبيق H.Collage',
+    lead: 'يقرأ القسم الخاص الملفات من مجلد على خادمك عبر HTTPS، باسم مستخدم وكلمة مرور مخصصين له وحده. لا يستخدم التطبيق أبدًا دخولك عبر SSH ولا حساب root، ويبقيان مغلقين كما هما الآن.',
+    need_h: 'ما تحتاج إليه',
+    need_1: 'خادم Linux (‏Ubuntu أو Debian) يمكنك الدخول إليه عبر SSH بصلاحيات sudo.',
+    need_2: 'اسم نطاق يشير إلى عنوان IP الخاص بالخادم. يكفي نطاق فرعي مجاني من <a href="https://www.duckdns.org/">DuckDNS</a>.',
+    need_3: 'المنفذان 80 و443 مفتوحان، في جدار حماية الخادم ولدى مزوّد الاستضافة.',
+    s1_h: 'ثبّت Caddy',
+    s1_p: 'Caddy خادم ويب صغير يحصل على شهادة HTTPS بنفسه. ادخل إلى الخادم عبر SSH كعادتك، وتأكد أولًا من أن المنفذين 80 و443 غير مستخدمين:',
+    s1_note: 'إذا أظهر هذا الأمر أي شيء، فهناك خادم ويب آخر يعمل بالفعل. توقف وعالج ذلك أولًا، فتثبيت Caddy فوقه سيعطّله.',
+    s1_p2: 'إذا لم يظهر شيء، فثبّت Caddy:',
+    s2_h: 'اختر المجلد الذي ستشاركه',
+    s2_p: 'كل ما في هذا المجلد سيظهر في التطبيق، ولا شيء خارجه. أنشئه واسمح لـ Caddy بقراءته:',
+    s2_note: 'ضع ملفاتك فيه بالطريقة التي تنسخ بها الملفات إلى الخادم عادةً. بعد إضافة ملفات جديدة، شغّل السطر الثاني مرة أخرى.',
+    s3_h: 'أنشئ كلمة مرور للتطبيق',
+    s3_p: 'شغّل هذا الأمر واكتب كلمة مرور جديدة مرتين. سيطبع سطرًا طويلًا يبدأ بـ <code>$2a$</code>، انسخه.',
+    s3_note: 'اجعلها كلمة مرور جديدة وطويلة. ليست كلمة مرور root أو SSH، ولا تفتح إلا هذا المجلد وللقراءة فقط.',
+    s4_h: 'اكتب إعدادات Caddy',
+    s4_p: 'افتح ملف الإعدادات:',
+    s4_p2: 'احذف كل ما فيه والصق النص أدناه. في السطر الأول ضع نطاقك؛ وبدل <code>me</code> أي اسم مستخدم تريده؛ وبدل سطر <code>$2a$…</code> السطر الذي نسخته في الخطوة 3. احفظ بـ Ctrl+O ثم Enter، واخرج بـ Ctrl+X.',
+    s5_h: 'شغّله',
+    s5_p: 'خلال دقيقة يحصل Caddy على شهادة HTTPS بنفسه. للتحقق، افتح <code>https://</code> متبوعًا بنطاقك في أي متصفح: يجب أن يطلب اسم المستخدم وكلمة المرور، ثم يعرض ملفاتك.',
+    s6_h: 'أضف الخادم في H.Collage',
+    s6_1: '<strong>العنوان:</strong> <code>https://</code> ونطاقك، مثلًا <code>https://files.example.com</code>',
+    s6_2: '<strong>المستخدم:</strong> الاسم من الخطوة 4',
+    s6_3: '<strong>كلمة المرور:</strong> التي أنشأتها في الخطوة 3. لا يحفظها التطبيق، بل تكتبها عند كل اتصال.',
+    why_h: 'لماذا بهذه الطريقة',
+    why_p: 'كل شيء يمر عبر HTTPS، فلا يستطيع أحد على الشبكة بينكما قراءة كلمة المرور أو الملفات. لا يحصل التطبيق أبدًا على مفتاح لخادمك: حتى لو أُجبر أحد على فتح القسم الخاص، فلن يصل إلا إلى هذا المجلد وللقراءة فقط، لا إلى الخادم.',
+    tr_h: 'إذا لم يتم الاتصال',
+    tr_1: '<strong>«No answer from this address»</strong>: النطاق لا يشير إلى الخادم بعد، أو المنفذان 80 و443 مغلقان. تحقق من جدار حماية المزوّد أيضًا.',
+    tr_2: '<strong>«The server answered, but it does not share files with H.Collage yet»</strong>: ‏Caddy لا يعمل أو الإعدادات تختلف عن الخطوة 4. يُظهر <code>sudo systemctl status caddy</code> سبب المشكلة.',
+    tr_3: '<strong>«Wrong password»</strong>: اسم المستخدم أو كلمة المرور لا يطابقان الإعدادات. يجب أن يُنشأ سطر الخطوة 3 من كلمة المرور نفسها التي تكتبها في التطبيق.',
+  },
+};
+
+const english = {};
+document.querySelectorAll('[data-t]').forEach((el) => { english[el.dataset.t] = el.innerHTML; });
+english.copy = 'Copy';
+english.copied = 'Copied';
+let current = 'en';
+
+function apply(lang) {
+  current = T[lang] ? lang : 'en';
+  const dict = current === 'en' ? english : T[current];
+  document.querySelectorAll('[data-t]').forEach((el) => {
+    el.innerHTML = dict[el.dataset.t] ?? english[el.dataset.t];
+  });
+  document.querySelectorAll('.copy').forEach((b) => { b.textContent = dict.copy; });
+  document.documentElement.lang = current;
+  document.documentElement.dir = current === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('.langs button').forEach((b) => {
+    b.setAttribute('aria-pressed', String(b.dataset.set === current));
+  });
+  try { localStorage.setItem('guide-lang', current); } catch {}
+}
+
+function initial() {
+  const asked = new URLSearchParams(location.search).get('lang');
+  if (asked) return asked;
+  try { const saved = localStorage.getItem('guide-lang'); if (saved) return saved; } catch {}
+  for (const l of navigator.languages || [navigator.language || 'en']) {
+    const code = l.slice(0, 2).toLowerCase();
+    if (code === 'en' || T[code]) return code;
+  }
+  return 'en';
+}
+
+document.querySelectorAll('.block').forEach((block) => {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'copy';
+  button.addEventListener('click', async () => {
+    const text = block.querySelector('pre').innerText;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const range = document.createRange();
+      range.selectNodeContents(block.querySelector('pre'));
+      const sel = getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      document.execCommand('copy');
+      sel.removeAllRanges();
+    }
+    const dict = current === 'en' ? english : T[current];
+    button.textContent = dict.copied;
+    setTimeout(() => { button.textContent = dict.copy; }, 1500);
+  });
+  block.appendChild(button);
+});
+
+document.querySelectorAll('.langs button').forEach((b) => {
+  b.addEventListener('click', () => apply(b.dataset.set));
+});
+apply(initial());
+</script>
+</body>
+</html>
