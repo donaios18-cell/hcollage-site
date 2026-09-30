@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nutzungsbedingungen — H.Collage</title>
+<meta name="description" content="Die Bedingungen, denen du zustimmst, wenn du H.Collage nutzt.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=Azeret+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,300;6..72,400&display=swap">
+<style>
+  :root {
+    --sheet: #EFEEEA; --card: #FFFFFF; --edge: #D6D5CF;
+    --ink: #15181B; --ink-soft: #5E6167; --ink-faint: #8E9197;
+    --grease: #D33A2C; --reg: #0F7C8A; color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sheet: #121416; --card: #1C1F22; --edge: #2E3235;
+      --ink: #F0EFEB; --ink-soft: #A9ACB1; --ink-faint: #767A80;
+      --grease: #FF6B57; --reg: #45C2D0; color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--sheet); color: var(--ink);
+    font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding-inline: 20px; padding-block: 0 56px; }
+  .masthead {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap; padding-block: 22px 0;
+  }
+  .wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; color: var(--ink); }
+  .wordmark span { color: var(--grease); }
+  .masthead { align-items: center; }
+  .masthead nav { display: flex; gap: 18px; font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .masthead a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid transparent; }
+  .masthead a:hover, .masthead a:focus-visible { color: var(--ink); border-bottom-color: var(--grease); }
+  h1 { font-size: clamp(30px, 5vw, 42px); letter-spacing: -0.03em; font-weight: 800; margin: 44px 0 8px; text-wrap: balance; }
+  .updated { font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 12px; color: var(--ink-faint); letter-spacing: 0.04em; margin: 0 0 30px; }
+  h2 { font-size: 21px; letter-spacing: -0.015em; margin: 34px 0 10px; }
+  p, li { color: var(--ink-soft); }
+  p { margin: 0 0 14px; }
+  ul { margin: 0 0 14px; padding-left: 20px; }
+  li { margin-bottom: 8px; }
+  strong { color: var(--ink); font-weight: 600; }
+  a { color: var(--ink); }
+  .warn {
+    background: var(--card); border: 1px solid var(--edge); border-left: 3px solid var(--reg);
+    border-radius: 4px; padding: 20px 22px; margin: 18px 0 24px;
+  }
+  .warn p:last-child { margin-bottom: 0; }
+  footer { border-top: 1px solid var(--edge); margin-top: 46px; padding-top: 22px;
+    font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 11.5px; color: var(--ink-faint);
+    display: flex; gap: 18px; flex-wrap: wrap; }
+  footer a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--edge); }
+</style>
+
+<link rel="canonical" href="https://collage.nghive.app/de/terms">
+<meta property="og:url" content="https://collage.nghive.app/de/terms">
+<meta property="og:title" content="Nutzungsbedingungen — H.Collage">
+<meta property="og:description" content="Die Bedingungen, denen du zustimmst, wenn du H.Collage nutzt.">
+<meta property="og:image" content="https://nghive.app/assets/header.jpg">
+<meta property="og:site_name" content="NG Hive">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="en" href="https://collage.nghive.app/terms">
+<link rel="alternate" hreflang="es" href="https://collage.nghive.app/es/terms">
+<link rel="alternate" hreflang="de" href="https://collage.nghive.app/de/terms">
+<link rel="alternate" hreflang="fr" href="https://collage.nghive.app/fr/terms">
+<link rel="alternate" hreflang="ru" href="https://collage.nghive.app/ru/terms">
+<link rel="alternate" hreflang="pt" href="https://collage.nghive.app/pt/terms">
+<link rel="alternate" hreflang="x-default" href="https://collage.nghive.app/terms">
+<style>
+  .translation-note { font-size: 13px; line-height: 1.5; opacity: .8; margin: 10px 0 0; }
+  .translation-note a { font-weight: inherit; }
+  /* language picker */
+  .lang-pick { position: relative; flex: none; }
+  .lang-pick summary {
+    list-style: none; cursor: pointer; user-select: none;
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 6px 10px; border: 1px solid var(--edge); border-radius: 999px;
+    font: 700 12px/1.2 inherit; letter-spacing: .06em; color: var(--ink);
+  }
+  .lang-pick summary::-webkit-details-marker { display: none; }
+  .lang-pick summary::after { content: ""; width: 5px; height: 5px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: translateY(-2px) rotate(45deg); opacity: .6; }
+  .lang-pick summary:hover, .lang-pick[open] summary { border-color: var(--grease); }
+  .lang-pick ul {
+    position: absolute; right: 0; top: calc(100% + 8px); z-index: 60;
+    margin: 0; padding: 6px; list-style: none; min-width: 150px;
+    background: var(--card); border: 1px solid var(--edge); border-radius: 4px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .16);
+  }
+  .lang-pick li { margin: 0; }
+  .lang-pick a {
+    display: block; padding: 7px 12px; border-radius: calc(4px - 4px);
+    color: var(--ink); text-decoration: none; border: 0; font-weight: 500; font-size: 14.5px; letter-spacing: 0; text-transform: none;
+  }
+  .lang-pick a:hover { background: color-mix(in srgb, var(--grease) 12%, transparent); }
+  .lang-pick a[aria-current] { color: var(--grease); font-weight: 700; }
+</style>
+<script src="../lang.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="wordmark" href="./">H<span>.</span>Collage</a>
+    <nav>
+      <a href="./">Start</a>
+      <a href="privacy">Datenschutzerklärung</a>
+    </nav>
+    <details class="lang-pick">
+      <summary aria-label="Sprache">DE</summary>
+      <ul>
+        <li><a href="../terms" lang="en" hreflang="en">English</a></li>
+        <li><a href="../es/terms" lang="es" hreflang="es">Español</a></li>
+        <li><a href="terms" lang="de" hreflang="de" aria-current="page">Deutsch</a></li>
+        <li><a href="../fr/terms" lang="fr" hreflang="fr">Français</a></li>
+        <li><a href="../ru/terms" lang="ru" hreflang="ru">Русский</a></li>
+        <li><a href="../pt/terms" lang="pt" hreflang="pt">Português</a></li>
+      </ul>
+    </details>
+  </header>
+
+  <h1>Nutzungsbedingungen</h1>
+  <p class="updated">Zuletzt aktualisiert am 29. September 2026</p>
+  <p class="translation-note">Dies ist eine Übersetzung zu deiner Orientierung. Weicht sie von der englischen Fassung ab, gilt die englische Fassung. <a href="../terms">Englische Fassung</a></p>
+
+  <h2>1. Vereinbarung</h2>
+  <p>
+    Diese Bedingungen gelten zwischen dir und NG Hive LLC, dem Entwickler von H.Collage („die
+    App“). Indem du die App herunterlädst oder nutzt, akzeptierst du sie. Wenn du sie nicht akzeptierst, nutze
+    die App nicht.
+  </p>
+
+  <h2>2. Deine Lizenz</h2>
+  <p>
+    Du erhältst eine persönliche, nicht exklusive, nicht übertragbare Lizenz, die App auf Geräten zu nutzen, die dir gehören
+    oder die du kontrollierst, soweit die Bedingungen des Stores, aus dem du sie hast (App Store oder Google Play), dies erlauben. Du darfst die App nicht verkaufen, vermieten,
+    unterlizenzieren, dekompilieren oder per Reverse Engineering zurückentwickeln, außer soweit das Gesetz dir dies ungeachtet
+    dieser Klausel erlaubt.
+  </p>
+
+  <h2>3. Testphase und Preis</h2>
+  <p>
+    Die App ist ab dem ersten Öffnen <strong>14 Tage</strong> lang kostenlos nutzbar. Danach
+    erfordert das Erstellen neuer Collagen einen <strong>einmaligen Kauf für $2.99</strong> (oder den Gegenwert in
+    deiner Landeswährung). Es ist kein Abo: Es gibt nichts zu verlängern und nichts zu kündigen.
+  </p>
+  <p>
+    Der Kauf wird von dem Store abgewickelt, in dem du ihn getätigt hast — Apples App Store oder Google Play.
+    Fragen zur Abrechnung und Erstattungen bearbeitet dieser Store nach seinen eigenen Bedingungen, nicht wir. Zum Wiederherstellen
+    eines Kaufs auf einem anderen Gerät wird dieselbe Apple ID bzw. dasselbe Google-Konto verwendet.
+  </p>
+
+  <h2>4. Deine Inhalte</h2>
+  <p>
+    Deine Fotos und die Collagen, die du erstellst, gehören dir. Wir beanspruchen keine Rechte daran und erhalten
+    sie nie. Du bist dafür verantwortlich, dass du die Fotos, die du in eine Collage einfügst, verwenden darfst.
+  </p>
+
+  <h2>5. Der private Bereich</h2>
+  <p>
+    Die App enthält einen optionalen privaten Bereich, der mit einem von dir festgelegten Zahlencode geöffnet wird und einen
+    Webbrowser sowie Zugriff auf Dateiserver enthält, die du selbst einrichtest.
+  </p>
+  <div class="warn">
+    <p>
+      <strong>Was er ist und was nicht.</strong> Der private Bereich ist eine Komfortfunktion für deine Privatsphäre. Er
+      soll verhindern, dass zufällige Betrachter — etwa jemand, der dein entsperrtes Handy in die Hand nimmt — auf seinen
+      Inhalt stoßen. Er ist <strong>keine</strong> Garantie für Geheimhaltung und nicht dafür ausgelegt,
+      einer forensischen Untersuchung eines beschlagnahmten, entsperrten oder kompromittierten Geräts standzuhalten.
+      Verlass dich nicht auf ihn als einzigen Schutz, wenn eine Offenlegung ernste Folgen hätte.
+    </p>
+    <p>
+      <strong>Der Code kann nicht wiederhergestellt werden.</strong> Der Inhalt ist mit einem Schlüssel verschlüsselt, der
+      aus deinem Code abgeleitet wird, und dieser Code wird nirgends gespeichert. Wenn du den Code vergisst, ist der Inhalt
+      dauerhaft unlesbar — für dich, für uns, für jeden.
+    </p>
+    <p>
+      <strong>Du entscheidest, womit er sich verbindet.</strong> Server und Websites, die du aus dem privaten
+      Bereich aufrufst, sind Dritte. Wir betreiben sie nicht, sehen den Datenverkehr nicht und übernehmen keine Verantwortung für
+      ihren Inhalt, ihre Sicherheit oder ihre Verfügbarkeit.
+    </p>
+  </div>
+
+  <h2>6. Zulässige Nutzung</h2>
+  <p>
+    Du bist dafür verantwortlich, die App dort, wo du dich befindest, rechtmäßig zu nutzen. Nutze sie nicht, um Rechte
+    anderer zu verletzen oder um Material zu speichern oder abzurufen, dessen Besitz für dich illegal ist.
+  </p>
+
+  <h2>7. Keine Gewährleistung</h2>
+  <p>
+    Die App wird „wie besehen“ und „wie verfügbar“ bereitgestellt, ohne ausdrückliche oder
+    stillschweigende Gewährleistungen jeglicher Art, einschließlich der Marktgängigkeit, der Eignung für einen bestimmten Zweck und der Nichtverletzung von Rechten Dritter. Wir
+    gewährleisten nicht, dass die App unterbrechungsfrei oder fehlerfrei funktioniert oder dass sie deine Daten erhält.
+    Bewahre eigene Kopien von allem auf, dessen Verlust du dir nicht leisten kannst.
+  </p>
+
+  <h2>8. Haftungsbeschränkung</h2>
+  <p>
+    Soweit gesetzlich zulässig, ist unsere gesamte Haftung im Zusammenhang mit der App auf den
+    Betrag beschränkt, den du dafür bezahlt hast. Wir haften nicht für indirekte, beiläufige, besondere oder Folgeschäden,
+    einschließlich Datenverlust, entgangenen Gewinns oder jeglicher Folgen der Offenlegung von Informationen,
+    die in der App gespeichert oder über sie abgerufen wurden.
+  </p>
+
+  <h2>9. Die App-Stores</h2>
+  <p>Wenn du die App aus Apples App Store hast:</p>
+  <ul>
+    <li>Diese Bedingungen gelten zwischen dir und uns, nicht mit Apple. Apple ist nicht für die App oder ihre Inhalte verantwortlich.</li>
+    <li>Apple ist nicht verpflichtet, Wartungs- oder Supportleistungen für die App zu erbringen.</li>
+    <li>Entspricht die App einer anwendbaren Gewährleistung nicht, kannst du Apple benachrichtigen, und Apple kann dir den Kaufpreis erstatten; im größtmöglichen gesetzlich zulässigen Umfang hat Apple keine weitere Gewährleistungspflicht.</li>
+    <li>Apple ist nicht für die Bearbeitung von Ansprüchen im Zusammenhang mit der App verantwortlich, einschließlich Ansprüchen aus Produkthaftung, wegen Nichteinhaltung gesetzlicher oder behördlicher Vorschriften oder aus Verbraucherschutz.</li>
+    <li>Apple und seine Tochtergesellschaften sind begünstigte Dritte dieser Bedingungen und können sie dir gegenüber durchsetzen.</li>
+  </ul>
+  <p>
+    Wenn du die App von Google Play hast, gelten für deinen Download und deinen Kauf zusätzlich die
+    Nutzungsbedingungen von Google Play. Diese Bedingungen gelten zwischen dir und uns, nicht mit Google, und Google ist nicht
+    für die App oder ihre Inhalte verantwortlich.
+  </p>
+
+  <h2>10. Änderungen und Beendigung</h2>
+  <p>
+    Wir können diese Bedingungen aktualisieren; die aktuelle Fassung steht immer mit ihrem Datum unter dieser Adresse.
+    Wenn du die App nach einer Änderung weiter nutzt, akzeptierst du sie. Deine Lizenz endet, wenn du diese
+    Bedingungen nicht mehr einhältst; du kannst sie jederzeit beenden, indem du die App löschst.
+  </p>
+
+  <h2>11. Anwendbares Recht</h2>
+  <p>
+    Diese Bedingungen unterliegen dem Recht des Bundesstaats Florida, Vereinigte Staaten, unter Ausschluss
+    seiner kollisionsrechtlichen Bestimmungen.
+  </p>
+
+  <h2>12. Kontakt</h2>
+  <p><a href="mailto:contact@nghive.app">contact@nghive.app</a></p>
+
+  <footer>
+    <a href="./">H.Collage</a>
+    <a href="privacy">Datenschutzerklärung</a>
+    <a href="mailto:contact@nghive.app">Kontakt</a>
+    <a href="https://nghive.app/" target="_blank" rel="noopener">Entwickelt von NG Hive &#8599;</a>
+  </footer>
+
+</div>
+</body>
+</html>

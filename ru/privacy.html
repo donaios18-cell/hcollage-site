@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Политика конфиденциальности — H.Collage</title>
+<meta name="description" content="Как H.Collage обращается с вашими данными: никак — оно их просто не собирает.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=Azeret+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,300;6..72,400&display=swap">
+<style>
+  :root {
+    --sheet: #EFEEEA; --card: #FFFFFF; --edge: #D6D5CF;
+    --ink: #15181B; --ink-soft: #5E6167; --ink-faint: #8E9197;
+    --grease: #D33A2C; color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sheet: #121416; --card: #1C1F22; --edge: #2E3235;
+      --ink: #F0EFEB; --ink-soft: #A9ACB1; --ink-faint: #767A80;
+      --grease: #FF6B57; color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--sheet); color: var(--ink);
+    font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding-inline: 20px; padding-block: 0 56px; }
+  .masthead {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap; padding-block: 22px 0;
+  }
+  .wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; color: var(--ink); }
+  .wordmark span { color: var(--grease); }
+  .masthead { align-items: center; }
+  .masthead nav { display: flex; gap: 18px; font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .masthead a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid transparent; }
+  .masthead a:hover, .masthead a:focus-visible { color: var(--ink); border-bottom-color: var(--grease); }
+  h1 { font-size: clamp(30px, 5vw, 42px); letter-spacing: -0.03em; font-weight: 800; margin: 44px 0 8px; text-wrap: balance; }
+  .updated { font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 12px; color: var(--ink-faint); letter-spacing: 0.04em; margin: 0 0 30px; }
+  .summary {
+    background: var(--card); border: 1px solid var(--edge); border-left: 3px solid var(--grease);
+    border-radius: 4px; padding: 20px 22px; margin-bottom: 34px;
+  }
+  .summary p { margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.5; color: var(--ink-soft); }
+  h2 { font-size: 21px; letter-spacing: -0.015em; margin: 34px 0 10px; }
+  p, li { color: var(--ink-soft); }
+  p { margin: 0 0 14px; }
+  ul { margin: 0 0 14px; padding-left: 20px; }
+  li { margin-bottom: 8px; }
+  strong { color: var(--ink); font-weight: 600; }
+  a { color: var(--ink); }
+  footer { border-top: 1px solid var(--edge); margin-top: 46px; padding-top: 22px;
+    font-family: 'Azeret Mono', ui-monospace, monospace; font-size: 11.5px; color: var(--ink-faint);
+    display: flex; gap: 18px; flex-wrap: wrap; }
+  footer a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--edge); }
+</style>
+
+<link rel="canonical" href="https://collage.nghive.app/ru/privacy">
+<meta property="og:url" content="https://collage.nghive.app/ru/privacy">
+<meta property="og:title" content="Политика конфиденциальности — H.Collage">
+<meta property="og:description" content="Как H.Collage обращается с вашими данными: никак — оно их просто не собирает.">
+<meta property="og:image" content="https://nghive.app/assets/header.jpg">
+<meta property="og:site_name" content="NG Hive">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="en" href="https://collage.nghive.app/privacy">
+<link rel="alternate" hreflang="es" href="https://collage.nghive.app/es/privacy">
+<link rel="alternate" hreflang="de" href="https://collage.nghive.app/de/privacy">
+<link rel="alternate" hreflang="fr" href="https://collage.nghive.app/fr/privacy">
+<link rel="alternate" hreflang="ru" href="https://collage.nghive.app/ru/privacy">
+<link rel="alternate" hreflang="pt" href="https://collage.nghive.app/pt/privacy">
+<link rel="alternate" hreflang="x-default" href="https://collage.nghive.app/privacy">
+<style>
+  .translation-note { font-size: 13px; line-height: 1.5; opacity: .8; margin: 10px 0 0; }
+  .translation-note a { font-weight: inherit; }
+  /* language picker */
+  .lang-pick { position: relative; flex: none; }
+  .lang-pick summary {
+    list-style: none; cursor: pointer; user-select: none;
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 6px 10px; border: 1px solid var(--edge); border-radius: 999px;
+    font: 700 12px/1.2 inherit; letter-spacing: .06em; color: var(--ink);
+  }
+  .lang-pick summary::-webkit-details-marker { display: none; }
+  .lang-pick summary::after { content: ""; width: 5px; height: 5px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: translateY(-2px) rotate(45deg); opacity: .6; }
+  .lang-pick summary:hover, .lang-pick[open] summary { border-color: var(--grease); }
+  .lang-pick ul {
+    position: absolute; right: 0; top: calc(100% + 8px); z-index: 60;
+    margin: 0; padding: 6px; list-style: none; min-width: 150px;
+    background: var(--card); border: 1px solid var(--edge); border-radius: 4px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .16);
+  }
+  .lang-pick li { margin: 0; }
+  .lang-pick a {
+    display: block; padding: 7px 12px; border-radius: calc(4px - 4px);
+    color: var(--ink); text-decoration: none; border: 0; font-weight: 500; font-size: 14.5px; letter-spacing: 0; text-transform: none;
+  }
+  .lang-pick a:hover { background: color-mix(in srgb, var(--grease) 12%, transparent); }
+  .lang-pick a[aria-current] { color: var(--grease); font-weight: 700; }
+</style>
+<script src="../lang.js" defer></script>
+<link rel="stylesheet" href="../cyrillic.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="wordmark" href="./">H<span>.</span>Collage</a>
+    <nav>
+      <a href="./">Главная</a>
+      <a href="terms">Условия использования</a>
+    </nav>
+    <details class="lang-pick">
+      <summary aria-label="Язык">RU</summary>
+      <ul>
+        <li><a href="../privacy" lang="en" hreflang="en">English</a></li>
+        <li><a href="../es/privacy" lang="es" hreflang="es">Español</a></li>
+        <li><a href="../de/privacy" lang="de" hreflang="de">Deutsch</a></li>
+        <li><a href="../fr/privacy" lang="fr" hreflang="fr">Français</a></li>
+        <li><a href="privacy" lang="ru" hreflang="ru" aria-current="page">Русский</a></li>
+        <li><a href="../pt/privacy" lang="pt" hreflang="pt">Português</a></li>
+      </ul>
+    </details>
+  </header>
+
+  <h1>Политика конфиденциальности</h1>
+  <p class="updated">Последнее обновление: 29 сентября 2026</p>
+  <p class="translation-note">Это перевод для удобства. Если он расходится с английской версией, преимущественную силу имеет английская версия. <a href="../privacy">Английская версия</a></p>
+
+  <div class="summary">
+    <p>H.Collage ничего о вас не собирает. Здесь нет ни аккаунта, ни аналитики, ни рекламы,
+    ни нашего сервера, с которым приложение могло бы связываться. Ваши фото остаются на вашем телефоне.</p>
+  </div>
+
+  <h2>Кто мы</h2>
+  <p>
+    H.Collage создано компанией NG Hive LLC. Вопросы об этой
+    политике присылайте на <a href="mailto:contact@nghive.app">contact@nghive.app</a>.
+  </p>
+
+  <h2>Что приложение хранит на вашем устройстве</h2>
+  <ul>
+    <li>Фотографии, которые вы выбрали для коллажа, — и только пока вы его редактируете.</li>
+    <li>Коллаж, который вы экспортируете, — по вашему запросу он сохраняется в медиатеку (приложение «Фото» на iPhone, галерея на Android).</li>
+    <li>Дату первого запуска приложения и сведения о том, купили ли вы его, — чтобы отсчитывать 14-дневный пробный период.</li>
+    <li>Если вы настроили закрытый раздел — его содержимое, зашифрованное ключом, полученным из выбранного вами кода. Сам код нигде не хранится.</li>
+  </ul>
+  <p>Всё это находится только на вашем устройстве. Удалите приложение — удалится и это.</p>
+
+  <h2>Что покидает ваше устройство</h2>
+  <p>
+    При создании коллажа <strong>ничего никуда не отправляется</strong>. У приложения нет серверной части, и оно не
+    загружает ваши фото.
+  </p>
+  <p>
+    Внутри закрытого раздела сетью пользуются две вещи, и обе обращаются туда, куда укажете вы:
+    запросы к файловому серверу, адрес которого вы вводите, и страницы, которые вы открываете во встроенном браузере.
+    Они попадают напрямую к владельцам этих серверов и сайтов и подпадают под их собственные политики
+    конфиденциальности. <strong>Через нас они не проходят, и мы их никогда не видим.</strong> Пароли от серверов
+    вводятся каждый раз заново и не сохраняются.
+  </p>
+
+  <h2>Аналитика, реклама и отслеживание</h2>
+  <p>
+    Ничего этого нет. В приложении нет ни SDK для аналитики, ни рекламных SDK, ни идентификаторов
+    для отслеживания, и оно не отслеживает вас в других приложениях и на сайтах.
+  </p>
+
+  <h2>Ваша покупка</h2>
+  <p>
+    Разовую покупку обрабатывает магазин, из которого вы установили приложение, — App Store от Apple на
+    iPhone, Google Play на Android, — а не мы. Вашими платёжными данными занимается магазин; мы их никогда
+    не получаем. Отчёты о продажах, которые магазины предоставляют разработчикам, не содержат вашего имени,
+    адреса электронной почты или платёжных данных.
+  </p>
+
+  <h2>Какие разрешения запрашивает приложение</h2>
+  <p>
+    Доступ к медиатеке — только для того, чтобы вы могли выбрать фото для коллажа и сохранить туда
+    готовый коллаж. Приложение не читает медиатеку в фоновом режиме и не запрашивает доступ
+    к геопозиции, контактам, микрофону или камере.
+  </p>
+
+  <h2>Дети</h2>
+  <p>
+    H.Collage не предназначено для детей младше 13 лет и сознательно не собирает о них информацию.
+    Поскольку приложение ни у кого не собирает никакой информации, речь здесь идёт о целевой аудитории,
+    а не об обработке данных.
+  </p>
+
+  <h2>Если вы нам напишете</h2>
+  <p>
+    Письмо, которое вы нам отправляете, содержит только то, что вы решите в него включить, и мы храним его
+    лишь столько, сколько нужно, чтобы вам ответить. Мы не добавляем вас ни в какие рассылки.
+  </p>
+
+  <h2>Изменения</h2>
+  <p>
+    Если эта политика изменится, новая версия появится на этой странице с новой датой. О существенных
+    изменениях также будет сказано в примечаниях к выпуску приложения.
+  </p>
+
+  <h2>Применимое право</h2>
+  <p>Эта политика регулируется законодательством штата Флорида, США.</p>
+
+  <footer>
+    <a href="./">H.Collage</a>
+    <a href="terms">Условия использования</a>
+    <a href="mailto:contact@nghive.app">Написать нам</a>
+    <a href="https://nghive.app/" target="_blank" rel="noopener">Сделано в NG Hive &#8599;</a>
+  </footer>
+
+</div>
+</body>
+</html>
